@@ -25,8 +25,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Setup MSBuild path
-      uses: microsoft/setup-msbuild@v1.0.1
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
     
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v1.0.2
