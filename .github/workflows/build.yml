@@ -1,14 +1,22 @@
 name: Build and Deploy
-
 on:
-  push:
-    branches:
-      - master
-
+  workflow_dispatch:  
+    inputs:
+      run_id:
+        description: Build ID to Deploy
+        required: false
+        default: null
+      env:
+        description: environment to run against - dev or staging
+        required: true
+        default: dev
+        type: choice
+        options:
+        - dev
+        - stg
 env:
-  AZURE_WEBAPP_NAME: SimpleFrameworkApp.sln     # set this to your application's name
+  AZURE_WEBAPP_NAME: demo-ais     # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: 'published'      # set this to the path to your web app project, defaults to the repository root
-
 jobs:
   build:
     name: Build and deploy
@@ -39,6 +47,7 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        slot-name:  ${{ github.event.inputs.env }}
 
     - name: Publish artifacts
       uses: actions/upload-artifact@v1.0.0
